@@ -1,6 +1,6 @@
 ## AMQP Modern
 
-A small `amqplib` wrapper for nodejs that simplified interactions with queue systems.
+A small `amqplib` wrapper for nodejs that simplifies interactions with queue systems.
 
 - Consuming a channel
 - Async / Await based
