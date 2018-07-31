@@ -1,0 +1,31 @@
+{
+  "name": "amqp-modern",
+  "version": "0.0.1",
+  "description": "Wrapper around amqplib that brings the client syntax into 2018",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npx babel src/index.js --out-file dist/index.js --presets=es2015"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/crossfield/amqp-modern.git"
+  },
+  "keywords": [
+    "amqp",
+    "queue",
+    "rabbitmq"
+  ],
+  "author": "Zach Silveira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crossfield/amqp-modern/issues"
+  },
+  "homepage": "https://github.com/crossfield/amqp-modern#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.2"
+  }
+}
