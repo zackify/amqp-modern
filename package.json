@@ -1,6 +1,6 @@
 {
   "name": "amqp-modern",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wrapper around amqplib that brings the client syntax into 2018",
   "main": "dist/index.js",
   "scripts": {

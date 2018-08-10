@@ -1,4 +1,8 @@
 export default url => {
+  //in test mode, dont connect
+  if (process.env.NODE_ENV === 'test')
+    return { consume: () => true, publish: () => true };
+
   const open = require('amqplib').connect(url);
 
   const consume = async consumer => {
