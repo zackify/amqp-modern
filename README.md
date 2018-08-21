@@ -21,8 +21,10 @@ import amqp from 'amqp-modern';
 
 let client = amqp('amqp://connection string here');
 
-//consume a channel
+//catch and log any time a queue has an error
+client.onError(error => console.log(error));
 
+//consume a channel
 client.consume({
   channel: 'message',
   process: async message => {
