@@ -27,6 +27,9 @@ client.onError(error => console.log(error));
 //consume a channel
 client.consume({
   channel: 'message',
+  //wait 10 seconds after each failure, useful to not reject and retry instantly, probably looping really fast
+
+  rejectionDelay: 10000,
   process: async message => {
     await sendAnEmail(message.description);
     //if this promise rejects, the queue will retry

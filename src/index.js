@@ -26,7 +26,7 @@ export default url => {
       } catch (e) {
         console.error(e);
         if (errorCallback) errorCallback(e);
-        channel.nack(msg);
+        setTimeout(() => channel.nack(msg), consumer.rejectionDelay || 0);
       }
     });
   };
