@@ -1,6 +1,6 @@
 export default url => {
   //in test mode, dont connect
-  let errorCallback;
+  let configOptions = {};
 
   if (process.env.NODE_ENV === 'test')
     return { consume: () => true, publish: () => true };
@@ -25,8 +25,8 @@ export default url => {
         channel.ack(msg);
       } catch (e) {
         console.error(e);
-        if (errorCallback) errorCallback(e);
-        setTimeout(() => channel.nack(msg), consumer.rejectionDelay || 0);
+        if (configOptions.onError) configOptions.onError(e);
+        setTimeout(() => channel.nack(msg), configOptions.rejectionDelay || 0);
       }
     });
   };
@@ -40,5 +40,5 @@ export default url => {
     channel.sendToQueue(name, new Buffer(JSON.stringify(message)));
   };
 
-  return { consume, publish, onError: callback => (errorCallback = callback) };
+  return { consume, publish, config: options => (configOptions = options) };
 };
