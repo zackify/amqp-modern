@@ -14,6 +14,8 @@ export default url => {
 
     channel.assertQueue(consumer.channel);
 
+    if (configOptions.prefetch) channel.prefetch(configOptions.prefetch);
+
     channel.consume(consumer.channel, async msg => {
       if (!msg) return console.warn('empty message received');
 
