@@ -40,6 +40,7 @@ export default url => {
 
     channel.assertQueue(name);
     channel.sendToQueue(name, new Buffer(JSON.stringify(message)));
+    channel.close();
   };
 
   return { consume, publish, config: options => (configOptions = options) };
