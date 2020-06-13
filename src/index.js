@@ -6,17 +6,19 @@ export default url => {
     return { consume: () => true, publish: () => true };
 
   const open = require('amqplib').connect(url);
+  const channels = {};
 
   const consume = async consumer => {
     let connection = await open;
     let ok = await connection.createChannel();
-    let channel = await ok;
+    channels[consumer.channel] = await ok;
 
-    channel.assertQueue(consumer.channel);
+    channels[consumer.channel].assertQueue(consumer.channel);
 
-    if (configOptions.prefetch) channel.prefetch(configOptions.prefetch);
+    if (configOptions.prefetch)
+      channels[consumer.channel].prefetch(configOptions.prefetch);
 
-    channel.consume(consumer.channel, async msg => {
+    channels[consumer.channel].consume(consumer.channel, async msg => {
       if (!msg) return console.warn('empty message received');
 
       try {
@@ -24,23 +26,23 @@ export default url => {
 
         let message = JSON.parse(msg.content.toString());
         await consumer.process(message);
-        channel.ack(msg);
+        channels[consumer.channel].ack(msg);
       } catch (e) {
         console.error(e);
         if (configOptions.onError) configOptions.onError(e);
-        setTimeout(() => channel.nack(msg), configOptions.rejectionDelay || 0);
+        setTimeout(
+          () => channels[consumer.channel].nack(msg),
+          configOptions.rejectionDelay || 0,
+        );
       }
     });
   };
 
   const publish = async (name, message) => {
-    let connection = await open;
-    let ok = await connection.createChannel();
-    let channel = await ok;
+    const channel = channels[name];
 
     channel.assertQueue(name);
     channel.sendToQueue(name, new Buffer(JSON.stringify(message)));
-    channel.close();
   };
 
   return { consume, publish, config: options => (configOptions = options) };
